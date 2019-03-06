@@ -1,2 +1,14 @@
-# message_ix_south_africa
-This repository will contain the scripts and data after publication of the manuscript: "South Africa After Paris - Fracking Its Way to the NDCs?"
+# message_ix South Africa
+
+This repository contains the scripts and data of the manuscript: 
+*"South Africa After Paris - Fracking Its Way to the NDCs?"*. 
+
+The folder `db` contains the ixmp-HSQLDB database with the calibrated 
+baseline scenario.
+
+## Setup Instructions
+
+Before running or editing scenarios, you need to tell git not to track 
+the changes you make to the local database `db/message_sa`. To do so,
+open a git bash in your local repository (`../message_ix_south_africa` )
+and run `git update-index --skip-worktree db/*` .

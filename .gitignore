@@ -1,0 +1,9 @@
+# Pycharm Project meta files
+\.idea/
+
+# Database
+db/
+
+# misc
+utils/__pycache__/
+
