@@ -7,7 +7,8 @@ def run_scenarios(model, baseline, database, shale_costs, carbon_costs):
     # launch a platform to access the database
     mp = ixmp.Platform(dbprops=f'db/{database}', dbtype='HSQLDB')
     base = message_ix.Scenario(mp, model=model, scenario=baseline)
-
+    base.solve(model='MESSAGE-MACRO')
+    
     # Define values for progress report
     num = len(list(product(shale_costs, carbon_costs)))
     i = 0
@@ -18,7 +19,7 @@ def run_scenarios(model, baseline, database, shale_costs, carbon_costs):
     for s, c in product(shale_costs, carbon_costs):
 
         scenario = f'{s}USDpMWh-{c}USDtCO2'
-        scen = base.clone(model, scenario, keep_sol=False)
+        scen = base.clone(model, scenario, keep_solution=False)
         scen.set_as_default()
         scen.check_out()
         year = base.set('year').astype(int)

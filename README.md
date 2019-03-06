@@ -10,5 +10,15 @@ baseline scenario.
 
 Before running or editing scenarios, you need to tell git not to track 
 the changes you make to the local database `db/message_sa`. To do so,
-open a git bash in your local repository (`../message_ix_south_africa` )
+open a git bash in your local repository (`../message_ix_south_africa`)
 and run `git update-index --skip-worktree db/*` .
+
+## Runing Scenarios
+
+The baseline scenario, described in the manuscript, can be found in the 
+the ixmp-HSQL database included in this repository The described shale 
+gas and carbon price scenarios can be reproduced by running the `run.py`
+script. 
+The functions required for running the scenarios, post process and 
+generating the figures used in the manuscript can be found in the 
+`../utils` folder.

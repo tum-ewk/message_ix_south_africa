@@ -6,4 +6,7 @@ db/
 
 # misc
 utils/__pycache__/
+utils/plot/__pycache__/
+results/
+*.xlsx
 
