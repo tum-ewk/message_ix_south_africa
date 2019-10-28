@@ -36,6 +36,20 @@ For download, installation and setup instruction please refer to
 The folder `db` contains the ixmp-HSQLDB database with the calibrated 
 baseline scenario.
 
+## Setup Environment
+1. Install Python via [Anaconda](https://www.anaconda.com/distribution/)
+
+2. Open a command prompt and type
+
+    ```
+    conda env create -f environment.yml
+    ```
+
+3. To activate the `message-sa` environment each time. On Windows:
+    ```
+    conda activate message-sa
+    ```
+
 ## Setup Instructions
 Before running or editing scenarios, you need to tell git not to track 
 the changes you make to the local database `db/message_sa`. To do so,
