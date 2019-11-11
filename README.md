@@ -29,12 +29,9 @@ This repository contains the scripts and data for the following manuscript:
 ## Dependencies
 The code included in this repository depends on the open-source, dynamic
 systems-optimization model [MESSAGEix](https://messageix.iiasa.ac.at/).
-For download, installation and setup instruction please refer to 
-[github.com/iiasa/message_ix](https://github.com/iiasa/message_ix). 
+[MESSAGEix](https://messageix.iiasa.ac.at/) will be installed when the 
+environment is created.
 
-## Baseline Scenario
-The folder `db` contains the ixmp-HSQLDB database with the calibrated 
-baseline scenario.
 
 ## Setup Environment
 1. Install Python via [Anaconda](https://www.anaconda.com/distribution/)
@@ -50,11 +47,15 @@ baseline scenario.
     conda activate message-sa
     ```
 
-## Setup Instructions
-Before running or editing scenarios, you need to tell git not to track 
-the changes you make to the local database `db/message_sa`. To do so,
-open a git bash in your local repository (`message_ix_south_africa`)
+## Git Tracking recommendation 
+Before running or editing scenarios, it is recommended to tell git not
+to track  the changes you make to the local database `db/message_sa`.
+To do so, open a git bash in your local repository (`message_ix_south_africa`)
 and run `git update-index --skip-worktree db/*` .
+
+## Baseline Scenario
+The folder `db` contains the ixmp-HSQLDB database with the calibrated 
+baseline scenario.
 
 ## Runing Scenarios
 The described shale gas and carbon price scenarios can be reproduced
