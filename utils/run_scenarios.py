@@ -7,6 +7,8 @@ def run_scenarios(model, baseline, database, shale_costs, carbon_costs):
     # launch a platform to access the database
     mp = ixmp.Platform(dbprops=f'db/{database}', dbtype='HSQLDB')
     base = message_ix.Scenario(mp, model=model, scenario=baseline)
+    if base.has_solution():
+        base.remove_solution()
     base.solve(model='MESSAGE-MACRO')
     
     # Define values for progress report
