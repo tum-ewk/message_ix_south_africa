@@ -8,7 +8,6 @@ from utils.run_scenarios import *
 model = 'MESSAGE South Africa'
 baseline = 'baseline'
 database = 'message_sa'
-fixed_basleine = 'baseline_fixed_output'
 
 # shale gas extraction costs (USDpMWh) & carbon costs (USDtCO2) to model
 # shale_cost = list(range(1, 32, 2)) + [10000]
@@ -17,10 +16,10 @@ shale_cost = [1, 10, 30, 1000]
 carbon_cost = [0, 5, 15, 30]
 
 # run the scenarios
-run_scenarios(model, fixed_basleine, database, shale_cost, carbon_cost)
+run_scenarios(model, baseline, database, shale_cost, carbon_cost)
 
 # run the postprocessing
-results_to_xlsx(model, fixed_basleine, database, shale_cost, carbon_cost)
+results_to_xlsx(model, baseline, database, shale_cost, carbon_cost)
 
 # plot ghg-emissions over the model horizon
 plot_emissions()
