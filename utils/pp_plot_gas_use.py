@@ -3,7 +3,7 @@ import pandas as pd
 from utils.plot.plot_facetgrid import plot_facet_grids
 
 
-def plot_power_sector(s=None, c=None, order=None):
+def plot_gas_use(s=None, c=None, order=None):
     try:
         data = pd.read_excel('results/timeseries.xlsx').reset_index(
             drop=True)
@@ -43,7 +43,7 @@ def plot_power_sector(s=None, c=None, order=None):
 
     capacity = get_plot_data(data, keyword='Capacity|Electricity', synonyms=synonyms, col_dic=col_dic)
     plot_facet_grids(capacity, y_title='PPL Capacity [GW]', figure_title='Power_Capacity_GW', col_dic=col_dic,
-                     y_max=280, order=order)
+                     y_max=350, order=order)
 
 
 def get_plot_data(data, keyword, synonyms, col_dic):

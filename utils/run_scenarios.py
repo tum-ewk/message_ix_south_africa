@@ -19,7 +19,6 @@ def run_scenarios(model, baseline, database, shale_costs, carbon_costs):
     # Run Scenario
     ##################################
     for s, c in product(shale_costs, carbon_costs):
-
         scenario = f'{s}USDpMWh-{c}USDtCO2'
         scen = base.clone(model, scenario, keep_solution=False)
         scen.set_as_default()
@@ -29,30 +28,26 @@ def run_scenarios(model, baseline, database, shale_costs, carbon_costs):
         model_years = list(year[year >= int(first_model_year)])
 
         # update scenario carbon cost
-        filters = dict(node='South Africa', type_emission='CO2',
-                       type_tec='all', type_year=model_years)
+        filters = dict(node='South Africa', type_emission='CO2', type_tec='all', type_year=model_years)
         par = scen.par('tax_emission', filters)
-        par['value'] = [(c * ((1 + 0.05) ** n)) for n in range(0, 60, 10)]
+        par['value'] = [(c * ((1 + 0.05) ** n)) for n in range(0, len(model_years)*10, 10)]
         scen.add_par('tax_emission', par)
 
         # update scenario shale gas extraction costs
-        filters = dict(mode='M1', node_loc='South Africa', time='year',
-                       year_act=model_years, year_vtg=model_years,
+        filters = dict(mode='M1', node_loc='South Africa', time='year', year_act=model_years, year_vtg=model_years,
                        technology='shale_extr')
         par = scen.par('var_cost', filters)
-        par['value'] = s * 8.76  # from USD/kWh to MUSD/GWa
+        par['value'] = s * 3.6 * 8.76  # from USD/GJ to USD/MWh to MUSD/GWa
         scen.add_par('var_cost', par)
 
-        scen.commit('update variable costs and carbon price according to the '
-                    'scenario specifications')
+        scen.commit('update variable costs and carbon price according to the scenario specifications')
 
         # Solve Model
         try:
             scen.solve(model='MESSAGE-MACRO')
         except:
             infeasible_models = infeasible_models + [scenario]
-            print(f'Infeasible model. Shale gas extraction costs: {s}, '
-                  f'carbon price {c}.')
+            print(f'Infeasible model. Shale gas extraction costs: {s}, carbon price {c}.')
             continue
         print(f'Done running {i + 1} out of {num} scenarios.')
         i = i + 1

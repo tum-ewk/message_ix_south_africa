@@ -1,5 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 plt.style.use('seaborn-talk')
@@ -10,8 +10,8 @@ def convert_to_ej(a):
     return a
 
 
-def all_heatmap_plots(_plot_dic, name_dic):
-    fig = plt.figure(figsize=(16, 8.4))
+def all_heatmap_plots(_plot_dic, name_dic, figure_title):
+    fig = plt.figure(figsize=(5, 16))
     fig.subplots_adjust(hspace=0.25, wspace=0.2)
     N = 6
 
@@ -20,7 +20,7 @@ def all_heatmap_plots(_plot_dic, name_dic):
         _pf = _plot_dic[list(_plot_dic.keys())[i - 1]]
         title = name_dic[list(_plot_dic.keys())[i - 1]]
 
-        ax = fig.add_subplot(2, 3, i)
+        ax = fig.add_subplot(6, 1, i)
         ax.set_facecolor('white')
 
         # Plot contour map colors
@@ -29,8 +29,7 @@ def all_heatmap_plots(_plot_dic, name_dic):
         ax.set_xlabel('Carbon Price  [$USD/CO_{2}$]')
         ax.set_ylabel('Shale Gas Cost [USD/GJ]')
         ax.set_title(f'{title}')
-    plt.savefig(f'results\\heat_maps.png', bbox_inches='tight',
-                dpi=100)
+    plt.savefig(f'results\\{figure_title}.png', bbox_inches='tight', dpi=100)
 
 
 def plot_heatmaps(_d, years):
@@ -38,7 +37,7 @@ def plot_heatmaps(_d, years):
     _d = _d[['variable', 'tax', 'cost', 'value']]
 
     # CO2 mitigation
-    co2 = _d[_d['variable'] == 'Emissions|Total'].copy()
+    co2 = _d[_d['variable'] == 'Emissions|GHG'].copy()
     co2_nn = co2[(co2.cost == 'none')]['value']
     co2['value'] = co2['value'].apply(lambda row: row - co2_nn)
     co2['value'] = co2['value'].apply(lambda row: row / co2_nn) * 100
@@ -46,11 +45,12 @@ def plot_heatmaps(_d, years):
     _d = _d.append(co2, sort=True)
 
     # Fossil Energy Supply
-    extr = _d[_d.variable == 'Activity|all_extr'].value.values
-    imp = _d[_d.variable == 'Activity|all_imp'].value.values
-    exp = _d[_d.variable == 'Activity|all_exp'].value.values
-    _tpes = _d[_d.variable == 'Activity|all_extr'].copy()
-    _tpes['value'] = extr + imp - exp
+    extr = _d[_d.variable == 'Activity|all_extr'][['cost', 'tax', 'value']].rename(columns={'value': 'value_extr'})
+    imp = _d[_d.variable == 'Activity|all_imp'][['cost', 'tax', 'value']].rename(columns={'value': 'value_imp'})
+    exp = _d[_d.variable == 'Activity|all_exp'][['cost', 'tax', 'value']].rename(columns={'value': 'value_exp'})
+    _tpes = extr.merge(imp, how='outer', on=['cost', 'tax']).merge(exp, how='outer', on=['cost', 'tax'])
+
+    _tpes['value'] = _tpes['value_extr'].add(_tpes['value_imp']).subtract(_tpes['value_exp'])
     _tpes['variable'] = 'TPES|fossil'
     _d = _d.append(_tpes, sort=True)
 
@@ -58,7 +58,7 @@ def plot_heatmaps(_d, years):
 
     # %% plot all data
     plot_dic = {}
-    name_dic = {'Activity|shale_extr':'(a) Shale Gas Extraction [EJ]',
+    name_dic = {'Activity|shale_extr': '(a) Shale Gas Extraction [EJ]',
                 'TPES|fossil': '(b) Fossil PE Supply [EJ]',
                 'Activity|coal_extr': '(c) Coal Extraction [EJ]',
                 'Activity|renewable_energy': '(d) Renewable Energy Use [EJ]',
@@ -66,12 +66,15 @@ def plot_heatmaps(_d, years):
 
     for name in name_dic.keys():
         _p = _d[_d.variable == name].copy()
-        if name in ['Activity|shale_extr', 'Activity|coal_extr', 'TPES|fossil',
-                    'Activity|renewable_energy']:
+        if name in ['Activity|shale_extr', 'Activity|coal_extr', 'TPES|fossil', 'Activity|renewable_energy']:
             _p = convert_to_ej(_p)
 
         _p['cost'] = [round(i / 8.760 / 3.6, 1) for i in _p['cost']]
         pf = pd.pivot_table(_p, columns='tax', index='cost', values='value')
         plot_dic[name] = pf
 
-    all_heatmap_plots(plot_dic, name_dic)
+    if len(years) == 1:
+        figure_title =f'heat_maps_{years[0]}'
+    else:
+        figure_title = f'heat_maps_cummulative'
+    all_heatmap_plots(plot_dic, name_dic, figure_title)
