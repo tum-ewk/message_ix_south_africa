@@ -61,8 +61,8 @@ def results_to_xlsx(model, baseline, database, shale_costs, carbon_costs,
             all_ts = all_ts.append(ts, sort=True)
 
             data = scen.var('CAP', {'node_loc': 'South Africa',
-                                    'year_vtg': years, 'technology': t})
-            data = data.rename(columns={'year_vtg': 'year'})
+                                    'year_act': years, 'technology': t})
+            data = data.rename(columns={'year_act': 'year'})
             ts = create_timeseries(data, f'Capacity|{k}', s, c, 'node_loc')
             all_ts = all_ts.append(ts, sort=True)
 
