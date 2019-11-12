@@ -1,13 +1,14 @@
-from utils.run_scenarios import *
 from utils.pp_db_to_xlsx import results_to_xlsx
 from utils.pp_plot_emissions import plot_emissions
-from utils.pp_plot_power_sector import plot_power_sector
 from utils.pp_plot_heatmaps import plot_heatmap_comparison
+from utils.pp_plot_power_sector import plot_power_sector
+from utils.run_scenarios import *
 
 # define database and the baseline scenario
 model = 'MESSAGE South Africa'
 baseline = 'baseline'
 database = 'message_sa'
+fixed_basleine = 'baseline_fixed_output'
 
 # shale gas extraction costs (USDpMWh) & carbon costs (USDtCO2) to model
 # shale_cost = list(range(1, 32, 2)) + [10000]
@@ -16,10 +17,10 @@ shale_cost = [1, 10, 30, 1000]
 carbon_cost = [0, 5, 15, 30]
 
 # run the scenarios
-run_scenarios(model, baseline, database, shale_cost, carbon_cost)
+run_scenarios(model, fixed_basleine, database, shale_cost, carbon_cost)
 
 # run the postprocessing
-results_to_xlsx(model, baseline, database, shale_cost, carbon_cost)
+results_to_xlsx(model, fixed_basleine, database, shale_cost, carbon_cost)
 
 # plot ghg-emissions over the model horizon
 plot_emissions()
