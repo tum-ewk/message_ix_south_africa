@@ -32,7 +32,7 @@ def results_to_xlsx(model, scenario, database, shale_costs, carbon_costs):
         if s == 'none':
             scen = base
         else:
-            scenario = f'{s}USDpMWh-{c}USDtCO2'
+            scenario = f'{s}USDpGJ-{c}USDtCO2'
             scen = message_ix.Scenario(mp, model=model, scenario=scenario)
 
         scenario_ts = results_to_iamc(scen, model, scenario, 'South Africa', l_year=2050)
@@ -126,6 +126,22 @@ def results_to_iamc(scen, model, scenario, region, l_year=2050):
         data = scen.var('ACT', {'node_loc': 'South Africa', 'year_act': years, 'technology': t})
         data = data.rename(columns={'year_act': 'year'})
         ts = create_timeseries(data, f'Activity|{k}', model, scenario, region, 'GWa', 'node_loc')
+        all_ts = all_ts.append(ts, sort=True)
+
+    # Gas use by sector data
+    act_dic = {'gas_use_power_sector': ['gas_cc', 'gas_ct', 'gas_ppl', 'gas_cc_ccs'],
+               'gas_use_industry': ['gas_fs', 'gas_i'],
+               'gas_use_transformation': ['meth_ng', 'meth_ng_ccs'],
+               'gas_use_transport': ['gas_trp'],
+               'gas_use_residential': ['gas_rc']}
+
+    for k, t in act_dic.items():
+        data = scen.var('ACT', {'node_loc': 'South Africa', 'year_act': years, 'technology': t})
+        inp = scen.par('input', {'node_loc': 'South Africa', 'year_act': years, 'technology': t})
+        data = data.merge(inp, how='inner', on=['node_loc', 'technology', 'year_act', 'year_vtg', 'mode'])
+        data = data.assign(lvl=data['lvl'].multiply(data['value']))
+        data = data.rename(columns={'year_act': 'year'})
+        ts = create_timeseries(data, f'Input|Gas|{k}', model, scenario, region, 'GWa', 'node_loc')
         all_ts = all_ts.append(ts, sort=True)
 
     return all_ts

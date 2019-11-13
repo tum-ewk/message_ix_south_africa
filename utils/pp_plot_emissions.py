@@ -2,22 +2,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from utils.plot.plot_rainbow import plot_rainbow
+from utils.utils import load_data
 
 plt.style.use('seaborn-talk')
 
 
 def plot_emissions(c=None):
-    try:
-        data = pd.read_excel('results/timeseries.xlsx').reset_index(
-            drop=True)
-    except:
-        return 'No xlsx results found in `../results`. ' \
-               'Run `results_to_xlsx` first.'
-
-    data['tax'] = [int(i.split(f'-')[1].replace('USDtCO2', '')) if len(i.split(f'-')) > 1 else 0 for i in data.scenario]
-    data['cost'] = [int(i.split(f'-')[0].replace('USDpMWh', '')) if len(i.split(f'-')) > 1 else 'none' for i in
-                    data.scenario]
-
+    data = load_data()
     if c:
         data = data[data.tax.isin(c)]
 

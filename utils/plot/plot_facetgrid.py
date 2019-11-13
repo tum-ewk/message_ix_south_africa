@@ -53,5 +53,5 @@ def plot_facet_grids(data, y_title, figure_title, col_dic, y_max=None, order=Non
             ax.set_ylim(bottom=0, top=y_max)
         i = i + 1
 
-    plt.legend(loc='center left', bbox_to_anchor=(-2.2, -0.19), ncol=8, frameon=False)
+    plt.legend(loc='center left', bbox_to_anchor=(-2.2, -0.19), ncol=4, frameon=False)
     plt.savefig(f'results/{figure_title}.png', bbox_inches='tight')

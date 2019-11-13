@@ -19,7 +19,7 @@ def run_scenarios(model, baseline, database, shale_costs, carbon_costs):
     # Run Scenario
     ##################################
     for s, c in product(shale_costs, carbon_costs):
-        scenario = f'{s}USDpMWh-{c}USDtCO2'
+        scenario = f'{s}USDpGJ-{c}USDtCO2'
         scen = base.clone(model, scenario, keep_solution=False)
         scen.set_as_default()
         scen.check_out()
