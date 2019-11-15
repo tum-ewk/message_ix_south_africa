@@ -66,5 +66,4 @@ def plot_rainbow(df, groupby, y_ax_titel, figure_title='figure',
 
     ax.grid(color='dimgray', linestyle='-', linewidth=1)
 
-    plt.savefig(f'results//{figure_title}.png',
-                bbox_inches='tight', dpi=100)
+    plt.savefig(f'results//{figure_title}.png', bbox_inches='tight', dpi=100)
