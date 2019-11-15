@@ -30,7 +30,7 @@ def plot_gas_use(s=None, c=None, order=None):
     years = [2020, 2030, 2040, 2050]
 
     activity = get_plot_data(data, keyword='Input|Gas', synonyms=synonyms, col_dic=col_dic)
-    activity[years] = activity[years] * 8760 * 3.6 * 10 ** -6 * 0.6
+    activity[years] = activity[years] * 8760 * 3.6 * 10 ** -6
     plot_facet_grids(activity, y_title='Natural Gas Use [EJ]', figure_title='Gas_Use_EJ', col_dic=col_dic,
                      y_max=3.5, order=order)
 

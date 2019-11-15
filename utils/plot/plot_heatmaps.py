@@ -35,13 +35,13 @@ def all_heatmap_plots(_plot_dic, name_dic, figure_title, lim_dic):
 
 
 def plot_heatmaps(_d, years):
-    _d['value'] = _d[years].sum(axis=1)
+    _d['value'] = _d[years].sum(axis=1, skipna=False)
     _d = _d[['variable', 'tax', 'cost', 'value']]
 
     # CO2 mitigation
     co2 = _d[_d['variable'] == 'Emissions|GHG'].copy()
     co2_nn = co2[(co2.cost == 'none')]['value']
-    co2 = co2.assign(value = co2['value'].apply(lambda row: (row - co2_nn)/ co2_nn *100))
+    co2 = co2.assign(value=co2['value'].apply(lambda row: (row - co2_nn) / co2_nn * 100))
     co2['variable'] = 'Emissions|rel. Mitigation'
     _d = _d.append(co2, sort=True)
 
@@ -71,7 +71,7 @@ def plot_heatmaps(_d, years):
         if name in ['Activity|shale_extr', 'Activity|coal_extr', 'TPES|fossil', 'Activity|renewable_energy']:
             _p = convert_to_ej(_p)
 
-        pf = pd.pivot_table(_p, columns='tax', index='cost', values='value')
+        pf = pd.pivot_table(_p, columns='tax', index='cost', values='value').interpolate()
         if len(years) != 1 and name != 'Emissions|rel. Mitigation':
             pf = pf.multiply(10)
         plot_dic[name] = pf
