@@ -13,8 +13,6 @@ baseline = 'baseline'
 database = 'message_sa'
 
 # shale gas extraction costs (USDpGJ) & carbon costs (USDtCO2) to model
-# shale_cost = list(range(1, 32, 2)) + [10000]
-# carbon_cost = list(range(0, 62, 2))
 shale_cost = sorted(list(set([0.3, 0.5, 1, 3, 1000] + [round(i, 1) for i in np.arange(0.3, 8, 0.4)] + [1000])))
 carbon_cost = list(set([0, 1, 3, 7, 10, 15, 30, 60] + list(range(0, 62, 2))))
 
@@ -29,11 +27,11 @@ plot_emissions(c=[0, 1, 3, 7, 15, 30, 60])
 
 # plot energy and capacity mix of the power sector
 plot_power_sector(s=[1, 3, 1000], c=[0, 10, 30], order=[(1000, 0), (1000, 10), (1000, 30),
-                                                         (3, 0), (3, 10), (3, 30), (1, 0), (1, 10), (1, 30)])
+                                                        (3, 0), (3, 10), (3, 30), (1, 0), (1, 10), (1, 30)])
 
 # plot energy and capacity mix of the power sector
 plot_gas_use(s=[1, 3, 1000], c=[0, 10, 30], order=[(1000, 0), (1000, 10), (1000, 30),
-                                                    (3, 0), (3, 10), (3, 30), (1, 0), (1, 10), (1, 30)])
+                                                   (3, 0), (3, 10), (3, 30), (1, 0), (1, 10), (1, 30)])
 
 # plot the scenario analysis heat maps - the variable 'years' indicates which years are presented in the plot
 plot_heatmap_comparison(years=[2030])
