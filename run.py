@@ -32,7 +32,7 @@ plot_power_sector(s=[1, 3, 1000], c=[0, 10, 30], order=[(1000, 0), (1000, 10), (
                                                          (3, 0), (3, 10), (3, 30), (1, 0), (1, 10), (1, 30)])
 
 # plot energy and capacity mix of the power sector
-plot_ga_use(s=[1, 3, 1000], c=[0, 10, 30], order=[(1000, 0), (1000, 10), (1000, 30),
+plot_gas_use(s=[1, 3, 1000], c=[0, 10, 30], order=[(1000, 0), (1000, 10), (1000, 30),
                                                     (3, 0), (3, 10), (3, 30), (1, 0), (1, 10), (1, 30)])
 
 # plot the scenario analysis heat maps - the variable 'years' indicates which years are presented in the plot
